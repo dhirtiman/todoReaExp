@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import Todos from './components/Todos';
 
 function App() {
   const [todos, setTodos] = useState([
@@ -52,45 +53,7 @@ function App() {
     })
   }
 
-  const styles = {
-    todoItem: {
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      padding: '16px',
-      marginBottom: '12px',
-      backgroundColor: '#f9f9f9',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    },
-    todoHeader: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '8px',
-    },
-    todoTitle: {
-      margin: 0,
-      fontSize: '18px',
-      fontWeight: 'bold',
-    },
-    status: {
-      fontSize: '24px',
-    },
-    todoDescription: {
-      margin: 0,
-      fontSize: '14px',
-      color: '#555',
-    },
-  };
-
-  const todoItems = todos.map((todo) => (
-    <li key={todo.id} style={styles.todoItem}>
-      <div style={styles.todoHeader}>
-        <h3 style={styles.todoTitle}>{todo.title}</h3>
-        <span style={styles.status} onClick={()=>completeTodo(todo.id)} >{todo.completed ? '🟢' : '🔴'}</span>
-      </div>
-      <p style={styles.todoDescription}>{todo.description}</p>
-    </li>
-  ));
+  
 
   return (
     <>
@@ -124,7 +87,7 @@ function App() {
       <br></br>
       <br></br>
       <button onClick={showTodos}>Show Todos</button>
-      <ul>{todoItems}</ul>
+      <Todos todos={todos} completeTodo={completeTodo} ></Todos>
     </>
   );
 }
