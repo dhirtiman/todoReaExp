@@ -16,7 +16,40 @@ function App() {
   }
 
   async function addTodo() {
-    console.log(todoTitle);
+    if (todoTitle === '' || todoDescription === '') {
+      return;
+    }
+
+    const todoPayload = {
+      title: todoTitle,
+      description: todoDescription,
+    };
+
+    setTodoTitle('');
+    setTodoDescription('');
+
+    axios
+      .post('http://localhost:3000/todo', todoPayload)
+      .then(function (response) {
+        console.log(response);
+        showTodos();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  async function completeTodo(id) {
+    axios.put('http://localhost:3000/completed',{id,})
+    .then((response)=>{
+        console.log(response);
+        showTodos();
+        
+    })
+    .catch((err)=>{
+      console.log(err);
+      
+    })
   }
 
   const styles = {
@@ -53,7 +86,7 @@ function App() {
     <li key={todo.id} style={styles.todoItem}>
       <div style={styles.todoHeader}>
         <h3 style={styles.todoTitle}>{todo.title}</h3>
-        <span style={styles.status}>{todo.completed ? '🟢' : '🔴'}</span>
+        <span style={styles.status} onClick={()=>completeTodo(todo.id)} >{todo.completed ? '🟢' : '🔴'}</span>
       </div>
       <p style={styles.todoDescription}>{todo.description}</p>
     </li>
@@ -64,6 +97,11 @@ function App() {
       <input
         name='todoTitle'
         value={todoTitle}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            addTodo();
+          }
+        }}
         onChange={(e) => setTodoTitle(e.target.value)}
         type='text'
         placeholder='Title'
@@ -72,6 +110,11 @@ function App() {
       <input
         name='todoDescription'
         value={todoDescription}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            addTodo();
+          }
+        }}
         onChange={(e) => setTodoDescription(e.target.value)}
         type='text'
         placeholder='description'
